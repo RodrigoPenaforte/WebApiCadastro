@@ -1,4 +1,3 @@
-C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\bin\Debug\net10.0\appsettings.Development.json
 C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\bin\Debug\net10.0\appsettings.json
 C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\bin\Debug\net10.0\WebApiCadastro.staticwebassets.endpoints.json
 C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\bin\Debug\net10.0\WebApiCadastro.exe
@@ -156,3 +155,4 @@ C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCad
 C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\obj\Debug\net10.0\WebApiCadastro.pdb
 C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\obj\Debug\net10.0\WebApiCadastro.genruntimeconfig.cache
 C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\obj\Debug\net10.0\ref\WebApiCadastro.dll
+C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\obj\Debug\net10.0\WebApiCadastro.sourcelink.json
