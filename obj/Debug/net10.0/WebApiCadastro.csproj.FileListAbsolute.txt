@@ -156,3 +156,6 @@ C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCad
 C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\obj\Debug\net10.0\WebApiCadastro.genruntimeconfig.cache
 C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\obj\Debug\net10.0\ref\WebApiCadastro.dll
 C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\obj\Debug\net10.0\WebApiCadastro.sourcelink.json
+C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\bin\Debug\net10.0\AutoMapper.dll
+C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\bin\Debug\net10.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Pc Estudante\OneDrive\Área de Trabalho\Csharp\WebApiCadastro\WebApiCadastro\bin\Debug\net10.0\Scalar.AspNetCore.dll
