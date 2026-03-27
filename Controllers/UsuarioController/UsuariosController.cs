@@ -4,12 +4,13 @@ using WebApiCadastro.Services.Usuario;
 
 namespace WebApiCadastro.Controllers.UsuarioController
 {
-    [Route("[controller]")]
-    public class UsuariosController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UsuariosController : ControllerBase
     {
-        private readonly UsuarioService _usuarioService;
+        private readonly IUsuarioService _usuarioService;
 
-        public UsuariosController(UsuarioService usuarioService)
+        public UsuariosController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
         }

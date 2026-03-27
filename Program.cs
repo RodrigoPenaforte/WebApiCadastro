@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebApiCadastro.Controllers.UsuarioController;
+using Scalar.AspNetCore;
 using WebApiCadastro.Data;
 using WebApiCadastro.Mapping;
 using WebApiCadastro.Services.Usuario;
@@ -29,9 +29,16 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.MapScalarApiReference("/scalar", op =>
+    {
+        op.Title = "Minha API - Scalar";
+        op.Theme = ScalarTheme.DeepSpace;
+    });
 }
 
 app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 

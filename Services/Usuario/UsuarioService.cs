@@ -11,12 +11,10 @@ namespace WebApiCadastro.Services.Usuario
     public class UsuarioService : IUsuarioService
     {
         public readonly AppDbContext _context;
-        private readonly IMapper _mapper;
 
-        public UsuarioService(AppDbContext context, IMapper mapper)
+        public UsuarioService(AppDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
         public async Task<ResponseModel<List<UsuarioModel>>> BuscarTodos()
         {
@@ -27,7 +25,10 @@ namespace WebApiCadastro.Services.Usuario
                 var usuarios = await _context.Usuarios.ToListAsync();
 
                 if (usuarios.Count() == 0)
+                {
                     response.Mensagem = "Nenhum usuário cadastrado!";
+                    return response;
+                }
 
                 response.Dados = usuarios;
                 response.Mensagem = "Usuário localizado com sucesso";
