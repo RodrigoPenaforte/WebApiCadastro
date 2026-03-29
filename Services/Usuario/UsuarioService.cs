@@ -16,6 +16,35 @@ namespace WebApiCadastro.Services.Usuario
         {
             _context = context;
         }
+
+        public async Task<ResponseModel<UsuarioModel>> BuscarPorId(int id)
+        {
+            ResponseModel<UsuarioModel> response = new();
+
+            try
+            {
+                var usuarioId = await _context.Usuarios.FirstOrDefaultAsync(userId => userId.Id == id);
+
+                if (usuarioId is null)
+                {
+                    response.Mensagem = "Usuário não encontrado...";
+                    return response;
+                }
+
+                response.Dados = usuarioId;
+                response.Mensagem = $"Usuário {usuarioId.NomeCompleto} encontrado..";
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
+
+        }
+
         public async Task<ResponseModel<List<UsuarioModel>>> BuscarTodos()
         {
             ResponseModel<List<UsuarioModel>> response = new();

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApiCadastro.Models.Responses;
 using WebApiCadastro.Models.Usuarios;
 using WebApiCadastro.Services.Usuario;
 
@@ -16,10 +17,17 @@ namespace WebApiCadastro.Controllers.UsuarioController
         }
 
         [HttpGet]
-        public async Task<IActionResult> BuscarTodoUsuarios()
+        public async Task<ActionResult> BuscarTodoUsuarios()
         {
             var usuario = await _usuarioService.BuscarTodos();
             return Ok(usuario);
+        }
+
+        [HttpGet("usuarioId/{id}")]
+        public async Task<ActionResult<ResponseModel<UsuarioModel>>>  BuscarUsuarioId(int id)
+        {
+            var usuarioId = await _usuarioService.BuscarPorId(id);
+            return usuarioId;
         }
 
 

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebApiCadastro")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4c54b0c911929f3d21407485a931dacc1598fd08")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+06ebed33476abe6c3738f3dd3be85f0eafaa57ad")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebApiCadastro")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebApiCadastro")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
