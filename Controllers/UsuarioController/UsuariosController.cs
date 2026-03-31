@@ -30,6 +30,12 @@ namespace WebApiCadastro.Controllers.UsuarioController
             return usuarioId;
         }
 
+        [HttpDelete("DeletarUsuario/{id}")]
+        public async Task<ActionResult<ResponseModel<UsuarioModel>>> DeletarUsuario(int id)
+        {
+            var usuarioId = await _usuarioService.DeletarUsuario(id);
+            return Ok(usuarioId);
+        }
 
     }
 }

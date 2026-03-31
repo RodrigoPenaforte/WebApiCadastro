@@ -70,5 +70,37 @@ namespace WebApiCadastro.Services.Usuario
                 return response;
             }
         }
+
+
+        public async Task<ResponseModel<UsuarioModel>> DeletarUsuario(int id)
+        {
+            ResponseModel<UsuarioModel> response = new();
+
+            try
+            {
+                var usuarioId = await _context.Usuarios.FirstOrDefaultAsync(i => i.Id == id);
+                if (usuarioId is null)
+                {
+                    response.Mensagem = "Usuário não encontrado...";
+                    return response;
+                }
+
+                response.Dados = usuarioId;
+        
+                _context.Remove(response.Dados);
+                await _context.SaveChangesAsync();
+                
+                response.Mensagem = "Usuário deletado com sucesso...";
+                return response;
+
+
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
     }
 }
