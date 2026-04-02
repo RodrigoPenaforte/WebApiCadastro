@@ -9,6 +9,7 @@ namespace WebApiCadastro.Mapping
         public MappingProfile()
         {
             CreateMap<UsuarioModel, UsuarioPostDtos>().ReverseMap();
+            CreateMap<UsuarioModel, UsuarioOutPutDto>().ReverseMap();
         }
     }
 }

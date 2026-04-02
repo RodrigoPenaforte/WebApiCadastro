@@ -84,25 +84,27 @@ namespace WebApiCadastro.Services.Usuario
 
             try
             {
-                if (!VerificaSeExisteEmailUsuarioRepetido(usuarioPostDtos))
+                if (await ExisteEmailOuUsuario(usuarioPostDtos))
                 {
-                    response.Mensagem = "Email/Usuário ja cadastrado...";
+                    response.Mensagem = "Email ou usuário já cadastrado";
+                    response.Status = false;
                     return response;
                 }
 
                 _senhaService.CriarSenhaHash(usuarioPostDtos.Senha, out byte[] senhaHash, out byte[] senhaSalt);
 
-                var usuarioDto = _mapper.Map<UsuarioModel>(usuarioPostDtos);
+                UsuarioModel usuario = _mapper.Map<UsuarioModel>(usuarioPostDtos);
 
-                if (usuarioDto is null)
-                {
-                    response.Mensagem = "Usuário não foi cadastrado..";
-                    return response;
+                usuario.SenhaHash = senhaHash;
+                usuario.SenhaSalt = senhaSalt;
+                usuario.DataCriacao = DateTime.UtcNow;
+                usuario.DataAlteracao = DateTime.UtcNow;
 
-                }
+                _context.Usuarios.Add(usuario);
+                await _context.SaveChangesAsync();
 
-                response.Dados = usuarioDto;
                 response.Mensagem = "Usuário Cadastrado com sucesso..";
+                response.Dados = usuario;
                 return response;
             }
             catch (Exception ex)
@@ -145,16 +147,11 @@ namespace WebApiCadastro.Services.Usuario
         }
 
 
-        private bool VerificaSeExisteEmailUsuarioRepetido(UsuarioPostDtos usuarioPostDtos)
+        private async Task<bool> ExisteEmailOuUsuario(UsuarioPostDtos usuarioPostDtos)
         {
-            var usuario = _context.Usuarios.FirstOrDefault(i => i.Email == usuarioPostDtos.Email || i.Usuario == usuarioPostDtos.Usuario);
-
-            if (usuario != null)
-            {
-                return false;
-            }
-
-            return true;
+            return await _context.Usuarios.AnyAsync(u =>
+                u.Email == usuarioPostDtos.Email ||
+                u.Usuario == usuarioPostDtos.Usuario);
         }
     }
 }

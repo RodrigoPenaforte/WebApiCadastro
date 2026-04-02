@@ -1,24 +1,20 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace WebApiCadastro.Dtos.UsuariosDtos
 {
     public class UsuarioPostDtos
     {
-        [Required(ErrorMessage = "Digite o Usuário")]
-        public string? Usuario { get; set; }
+        [StringLength(20, MinimumLength = 4, ErrorMessage = "O usuário deve ter entre 4 e 20 caracteres")]
+        public string Usuario { get; set; } = string.Empty;
         [Required(ErrorMessage = "Digite o Nome Completo")]
-        public string? NomeCompleto { get; set; }
+        public string NomeCompleto { get; set; } = string.Empty;
         [Required(ErrorMessage = "Digite o Email")]
-        public string? Email { get; set; }
-        public DateTime DataCriacao { get; set; } = DateTime.Now;
-        public DateTime DataAlteracao { get; set; }
-        [Required(ErrorMessage = "Digite o Senha")]
-        public string? Senha { get; set; }
-        [Required(ErrorMessage = "Digite a confirmação da senha"), Compare("Senha", ErrorMessage = "As senhas são são ")]
-        public string? ConfirmaSenha { get; set; }
+        [EmailAddress(ErrorMessage = "Email inválido")]
+        public string Email { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Digite a senha")]
+        [StringLength(20, MinimumLength = 6, ErrorMessage = "A senha deve ter entre 6 e 20 caracteres")]
+        public string Senha { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Confirme a senha")]
+        [Compare("Senha", ErrorMessage = "As senhas não conferem")]
+        public string ConfirmaSenha { get; set; } = string.Empty;
     }
 }

@@ -23,7 +23,7 @@ namespace WebApiCadastro.Controllers.UsuarioController
             return Ok(usuario);
         }
 
-        [HttpGet("usuarioId/{id}")]
+        [HttpGet("{id}", Name = "ObterUsuario")]
         public async Task<ActionResult<ResponseModel<UsuarioModel>>>  BuscarUsuarioId(int id)
         {
             var usuarioId = await _usuarioService.BuscarPorId(id);
