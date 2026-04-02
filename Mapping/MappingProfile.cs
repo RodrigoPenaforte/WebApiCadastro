@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using WebApiCadastro.Dtos.UsuariosDtos;
 using WebApiCadastro.Models.Usuarios;
@@ -12,7 +8,7 @@ namespace WebApiCadastro.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<UsuarioModel, UsuarioDtos>().ReverseMap();
+            CreateMap<UsuarioModel, UsuarioPostDtos>().ReverseMap();
         }
     }
 }

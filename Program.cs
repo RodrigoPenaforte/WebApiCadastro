@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using WebApiCadastro.Data;
 using WebApiCadastro.Mapping;
+using WebApiCadastro.Services.Senha;
 using WebApiCadastro.Services.Usuario;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<ISenhaService, SenhaService>();
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 

@@ -1,20 +1,27 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using WebApiCadastro.Data;
 using WebApiCadastro.Dtos.UsuariosDtos;
+using WebApiCadastro.Mapping;
 using WebApiCadastro.Models.Responses;
 using WebApiCadastro.Models.Usuarios;
+using WebApiCadastro.Services.Senha;
 
 namespace WebApiCadastro.Services.Usuario
 {
     public class UsuarioService : IUsuarioService
     {
-        public readonly AppDbContext _context;
+        private readonly AppDbContext _context;
+        private readonly ISenhaService _senhaService;
 
-        public UsuarioService(AppDbContext context)
+        private readonly IMapper _mapper;
+
+
+        public UsuarioService(AppDbContext context, ISenhaService senhaService, IMapper mapper)
         {
             _context = context;
+            _senhaService = senhaService;
+            _mapper = mapper;
         }
 
         public async Task<ResponseModel<UsuarioModel>> BuscarPorId(int id)
@@ -71,6 +78,40 @@ namespace WebApiCadastro.Services.Usuario
             }
         }
 
+        public async Task<ResponseModel<UsuarioModel>> CriarUsuario(UsuarioPostDtos usuarioPostDtos)
+        {
+            ResponseModel<UsuarioModel> response = new();
+
+            try
+            {
+                if (!VerificaSeExisteEmailUsuarioRepetido(usuarioPostDtos))
+                {
+                    response.Mensagem = "Email/Usuário ja cadastrado...";
+                    return response;
+                }
+
+                _senhaService.CriarSenhaHash(usuarioPostDtos.Senha, out byte[] senhaHash, out byte[] senhaSalt);
+
+                var usuarioDto = _mapper.Map<UsuarioModel>(usuarioPostDtos);
+
+                if (usuarioDto is null)
+                {
+                    response.Mensagem = "Usuário não foi cadastrado..";
+                    return response;
+
+                }
+
+                response.Dados = usuarioDto;
+                response.Mensagem = "Usuário Cadastrado com sucesso..";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
 
         public async Task<ResponseModel<UsuarioModel>> DeletarUsuario(int id)
         {
@@ -86,10 +127,10 @@ namespace WebApiCadastro.Services.Usuario
                 }
 
                 response.Dados = usuarioId;
-        
+
                 _context.Remove(response.Dados);
                 await _context.SaveChangesAsync();
-                
+
                 response.Mensagem = "Usuário deletado com sucesso...";
                 return response;
 
@@ -101,6 +142,19 @@ namespace WebApiCadastro.Services.Usuario
                 response.Status = false;
                 return response;
             }
+        }
+
+
+        private bool VerificaSeExisteEmailUsuarioRepetido(UsuarioPostDtos usuarioPostDtos)
+        {
+            var usuario = _context.Usuarios.FirstOrDefault(i => i.Email == usuarioPostDtos.Email || i.Usuario == usuarioPostDtos.Usuario);
+
+            if (usuario != null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
