@@ -94,6 +94,7 @@ namespace WebApiCadastro.Services.Usuario
                 _senhaService.CriarSenhaHash(usuarioPostDtos.Senha, out byte[] senhaHash, out byte[] senhaSalt);
 
                 UsuarioModel usuario = _mapper.Map<UsuarioModel>(usuarioPostDtos);
+                // Destino         //Origem
 
                 usuario.SenhaHash = senhaHash;
                 usuario.SenhaSalt = senhaSalt;
@@ -146,6 +147,39 @@ namespace WebApiCadastro.Services.Usuario
             }
         }
 
+        public async Task<ResponseModel<UsuarioOutPutDto>> EditarUsuario(UsuarioPutDtos usuarioPutDtos)
+        {
+            ResponseModel<UsuarioOutPutDto> response = new();
+
+            try
+            {
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == usuarioPutDtos.Id);
+
+                if (usuario is null)
+                {
+                    response.Mensagem = "Usuário não encontrado";
+                    return response;
+                }
+
+                _mapper.Map(usuarioPutDtos, usuario); //  Origem (usuarioPutDtos) -> Destino (usuario) 
+
+                usuario.DataAlteracao = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+
+                response.Dados = _mapper.Map<UsuarioOutPutDto>(usuario);  // Destino (UsuarioOutPutDto) ← Origem (usuario)
+                response.Mensagem = "Usuário atualizado com sucesso..";
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
 
         private async Task<bool> ExisteEmailOuUsuario(UsuarioPostDtos usuarioPostDtos)
         {

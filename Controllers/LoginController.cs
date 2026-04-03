@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebApiCadastro.Dtos.UsuariosDtos;
+using WebApiCadastro.Models.Responses;
 using WebApiCadastro.Services.Usuario;
 
 namespace WebApiCadastro.Controllers
@@ -36,7 +37,14 @@ namespace WebApiCadastro.Controllers
 
             var usuarioOutPut = _mapper.Map<UsuarioOutPutDto>(usuario.Dados);
 
-            return CreatedAtRoute("ObterUsuario", new { id = usuario.Dados.Id }, usuarioOutPut);
+            var response = new ResponseModel<UsuarioOutPutDto>
+            {
+              Dados = usuarioOutPut,
+              Mensagem = "Usuário cadastrado com sucesso...",
+            };
+
+
+            return CreatedAtRoute("ObterUsuario", new { id = usuario.Dados.Id }, response);
         }
     }
 }

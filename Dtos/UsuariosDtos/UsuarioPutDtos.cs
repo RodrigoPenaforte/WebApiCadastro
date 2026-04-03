@@ -15,7 +15,5 @@ namespace WebApiCadastro.Dtos.UsuariosDtos
         public string? NomeCompleto { get; set; }
         [Required(ErrorMessage = "Digite o Email")]
         public string? Email { get; set; }
-        public DateTime DataCriacao { get; set; } = DateTime.Now;
-        public DateTime DataAlteracao { get; set; }
     }
 }

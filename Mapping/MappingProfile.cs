@@ -10,6 +10,9 @@ namespace WebApiCadastro.Mapping
         {
             CreateMap<UsuarioModel, UsuarioPostDtos>().ReverseMap();
             CreateMap<UsuarioModel, UsuarioOutPutDto>().ReverseMap();
+            CreateMap<UsuarioPutDtos, UsuarioModel>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.DataCriacao, opt => opt.Ignore());
         }
     }
 }
