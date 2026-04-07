@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApiCadastro.Data;
+using WebApiCadastro.Dtos.LoginDtos;
 using WebApiCadastro.Dtos.UsuariosDtos;
 using WebApiCadastro.Mapping;
 using WebApiCadastro.Models.Responses;
@@ -167,9 +168,50 @@ namespace WebApiCadastro.Services.Usuario
 
                 await _context.SaveChangesAsync();
 
-                response.Dados = _mapper.Map<UsuarioOutPutDto>(usuario);  // Destino (UsuarioOutPutDto) ← Origem (usuario)
+                response.Dados = _mapper.Map<UsuarioOutPutDto>(usuario);  // Destino (UsuarioOutPutDto) <- Origem (usuario)
                 response.Mensagem = "Usuário atualizado com sucesso..";
 
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+
+        public async Task<ResponseModel<UsuarioOutPutDto>> LoginUsuario(UsuarioLoginDtos usuarioLoginDtos)
+        {
+            ResponseModel<UsuarioOutPutDto> response = new();
+
+            try
+            {
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(userBancoEmail => userBancoEmail.Email == usuarioLoginDtos.Email);
+
+                if (usuario is null)
+                {
+                    response.Mensagem = "Email do Usuário não encontrado";
+                    response.Status = false;
+                    return response;
+                }
+
+                if (!_senhaService.VerificarSenhaHash(usuarioLoginDtos.Senha, usuario.SenhaHash, usuario.SenhaSalt))
+                {
+                    response.Mensagem = "Senha do Usuário não encontrado";
+                    response.Status = false;
+                    return response;
+                }
+
+                var token = _senhaService.CriarToken(usuario);
+                usuario.Token = token;
+
+                _context.Update(usuario);
+                await _context.SaveChangesAsync();
+
+                response.Dados = _mapper.Map<UsuarioOutPutDto>(usuario);
+                response.Mensagem = "Usuário logado com sucesso...";
                 return response;
 
             }

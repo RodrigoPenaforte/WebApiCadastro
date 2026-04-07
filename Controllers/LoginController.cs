@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using WebApiCadastro.Dtos.LoginDtos;
 using WebApiCadastro.Dtos.UsuariosDtos;
 using WebApiCadastro.Models.Responses;
 using WebApiCadastro.Services.Usuario;
@@ -45,6 +46,32 @@ namespace WebApiCadastro.Controllers
 
 
             return CreatedAtRoute("ObterUsuario", new { id = usuario.Dados.Id }, response);
+
+
+        }
+
+        [HttpPost ("Login")]
+         public async Task<ActionResult<UsuarioOutPutDto>> Login(UsuarioLoginDtos usuarioLoginDtos)
+        {
+            var usuario = await _usuarioService.LoginUsuario(usuarioLoginDtos);
+
+            if (!usuario.Status || usuario.Dados == null)
+            {
+                return BadRequest(usuario);
+            }
+
+            var usuarioOutPut = _mapper.Map<UsuarioOutPutDto>(usuario.Dados);
+
+            var response = new ResponseModel<UsuarioOutPutDto>
+            {
+              Dados = usuarioOutPut,
+              Mensagem = "Usuário LOGADO com sucesso...",
+            };
+
+
+            return CreatedAtRoute("ObterUsuario", new { id = usuario.Dados.Id }, response);
+
+            
         }
     }
 }
