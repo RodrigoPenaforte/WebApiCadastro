@@ -1,11 +1,12 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebApiCadastro.Data;
 using WebApiCadastro.Dtos.LoginDtos;
 using WebApiCadastro.Dtos.UsuariosDtos;
-using WebApiCadastro.Mapping;
 using WebApiCadastro.Models.Responses;
 using WebApiCadastro.Models.Usuarios;
+using WebApiCadastro.Services.Auditorias;
 using WebApiCadastro.Services.Senha;
 
 namespace WebApiCadastro.Services.Usuario
@@ -14,15 +15,18 @@ namespace WebApiCadastro.Services.Usuario
     {
         private readonly AppDbContext _context;
         private readonly ISenhaService _senhaService;
-
         private readonly IMapper _mapper;
+        private readonly IAuditoriaService _auditoriaService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public UsuarioService(AppDbContext context, ISenhaService senhaService, IMapper mapper)
+        public UsuarioService(AppDbContext context, ISenhaService senhaService, IMapper mapper, IAuditoriaService auditoriaService, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _senhaService = senhaService;
             _mapper = mapper;
+            _auditoriaService = auditoriaService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResponseModel<UsuarioModel>> BuscarPorId(int id)
@@ -136,6 +140,12 @@ namespace WebApiCadastro.Services.Usuario
                 await _context.SaveChangesAsync();
 
                 response.Mensagem = "Usuário deletado com sucesso...";
+
+                string dadosAntes = JsonConvert.SerializeObject(usuarioId);
+
+                var userId = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+
+                await _auditoriaService.RegistrarAuditoriaAsync("Remoção", userId, $"Antes: {dadosAntes}");
                 return response;
 
 
@@ -162,6 +172,8 @@ namespace WebApiCadastro.Services.Usuario
                     return response;
                 }
 
+                string dadosAntes = JsonConvert.SerializeObject(usuario);
+
                 _mapper.Map(usuarioPutDtos, usuario); //  Origem (usuarioPutDtos) -> Destino (usuario) 
 
                 usuario.DataAlteracao = DateTime.UtcNow;
@@ -170,6 +182,11 @@ namespace WebApiCadastro.Services.Usuario
 
                 response.Dados = _mapper.Map<UsuarioOutPutDto>(usuario);  // Destino (UsuarioOutPutDto) <- Origem (usuario)
                 response.Mensagem = "Usuário atualizado com sucesso..";
+
+                string dadosDepois = JsonConvert.SerializeObject(usuario);
+                var usuarioId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+                await _auditoriaService.RegistrarAuditoriaAsync("Atualização", usuarioId, $"Antes: {dadosAntes} - Depois {dadosDepois}");
+
 
                 return response;
 

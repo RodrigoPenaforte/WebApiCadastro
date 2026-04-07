@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebApiCadastro.Dtos.LoginDtos;
@@ -9,7 +5,7 @@ using WebApiCadastro.Dtos.UsuariosDtos;
 using WebApiCadastro.Models.Responses;
 using WebApiCadastro.Services.Usuario;
 
-namespace WebApiCadastro.Controllers
+namespace WebApiCadastro.Controllers.LoginController
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebApiCadastro.Models.Auditorias;
 using WebApiCadastro.Models.Usuarios;
 namespace WebApiCadastro.Data
 {
@@ -10,6 +11,7 @@ namespace WebApiCadastro.Data
         }
 
         public DbSet<UsuarioModel> Usuarios { get; set; }
+        public DbSet<Auditoria> Auditorias { get; set; }
 
     }
 }

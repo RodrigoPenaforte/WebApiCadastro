@@ -1,5 +1,6 @@
 using AutoMapper;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApiCadastro.Dtos.UsuariosDtos;
 using WebApiCadastro.Models.Responses;
@@ -10,16 +11,14 @@ namespace WebApiCadastro.Controllers.UsuarioController
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
-        private readonly IMapper _mapper;
 
-
-        public UsuariosController(IUsuarioService usuarioService, IMapper mapper)
+        public UsuariosController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
-            _mapper = mapper;
         }
 
         [HttpGet]
